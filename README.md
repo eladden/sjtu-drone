@@ -20,11 +20,24 @@ Here <catkin_ws> is the path of the catkin workspace. Please refer to the [tutor
 # Run
 The simplest way is calling after you have built the workspace successfully.
 
+The simplest way is calling
 ```
 $cd <where you check out the code>
 $source devel/setup.bash
 $roslaunch sjtu_drone simple.launch
 ```
+
+Or using the old package
+or by running the different parts of the package, step by step
+
+```
+$cd <where you check out the code>
+$export ROS_PACKAGE_PATH=`pwd`:$ROS_PACKAGE_PATH
+$roscore #to start the ROS server
+$rosrun sjtu_drone start_gzserver <world file> #run the gazebo server and loading the world file
+$rosrun sjtu_drone start_gui #run the gazebo client
+$rosrun sjtu_drone spawn_model # generate a quadrotor in the scene
+$rosrun sjtu_drone drone_keyboard # run the keyboard controller to control the quadrotor
 
 # Adding drone to the simulation world
 In ROS codespace, the robots are generally added to the environment by `spawn_model` node of `gazebo_ros` package via feeding the corresponding URDF file. However, in this case there isn't any URDF file. In future I might add a simple URDf file just trivially produces a base link for the entire robot. However, current method is directly adding to the all `.world` files as follows:
