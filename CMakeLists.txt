@@ -116,6 +116,44 @@ set_target_properties( plugin_ros_cam
     ${PROJECT_SOURCE_DIR}/plugins
 )
 
+
+################# 5. A program using the keyboard to control the quadrotor #####
+set(CMAKE_AUTOMOC ON)
+
+#find the QtWidgets library
+find_package(Qt5Widgets REQUIRED)
+MESSAGE( STATUS "QT5: " ${Qt5Widgets_INCLUDE_DIRS} )
+include_directories(${Qt5Widgets_INCLUDE_DIRS})
+include_directories(build)
+include_directories(../../build)
+include_directories(../../build/sjtu_drone)
+
+QT5_WRAP_UI(UIS_HDRS src/DialogKeyboard.ui)
+QT5_WRAP_CPP(MOC_CPPS src/DialgoKeyboard.h)
+QT5_ADD_RESOURCES(RESOURCES src/drone_keyboard.qrc)
+
+add_executable( drone_keyboard
+    ${UIS_HDRS}
+    ${RESOURCES}
+    src/DialogKeyboard.cpp
+    src/drone_keyboard.cpp
+    src/drone_object_ros.cpp
+    include/drone_object_ros.h
+)
+
+qt5_use_modules(drone_keyboard Widgets)
+
+target_link_libraries( drone_keyboard
+    ${catkin_LIBRARIES}
+    Qt5::Widgets
+)
+
+set_target_properties( drone_keyboard
+    PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY
+    ${PROJECT_SOURCE_DIR}/bin
+)
+
 ################ 6. A simple program for spawning a drone model ###############
 add_executable( spawn_drone
    src/spawn_drone.cpp
