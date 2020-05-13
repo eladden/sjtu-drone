@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <launch>
  <!-- these are the arguments you can pass this launch file, for example paused:=true -->
   <arg name="paused" value="false"/>
@@ -10,8 +11,15 @@
   
   <!-- launch the custom world -->
    <include file="$(find gazebo_ros)/launch/empty_world.launch" >
-        <arg name="paused" value="True"/>
+        <arg name="paused" value="false"/>
         <arg name="world_name" value="$(arg world_name)"/>
         <arg name="verbose" value="True"/>
    </include>
+
+  <!-- start keyboard control ui -->
+  <node name="drone_keyboard" pkg="sjtu_drone" type="drone_keyboard" respawn="false"/>
+
+  <!-- ORBSLAM -->
+  <node name="transport" pkg="image_transport" type="republish" args="raw in:=drone/front_camera/image_raw out:=camera/image_raw" />
+  <node name="ORBSLAM" pkg="ORB_SLAM2" type="Mono" args="/media/eladden/DATA/orbslamhome/ORB_SLAM2/Vocabulary/ORBvoc.txt /media/eladden/DATA/catkin_ws/src/sjtu-drone/models/CamOptionsForOrbslam.yaml"/>
 </launch>
