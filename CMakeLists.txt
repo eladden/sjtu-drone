@@ -4,13 +4,34 @@ project(sjtu_drone)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS 
+
+find_package(catkin REQUIRED COMPONENTS
     roscpp
     rospy
     std_msgs
     sensor_msgs
     image_transport
     message_generation)
+
+set( CMAKE_MODULE_PATH    ${CMAKE_MODULE_PATH}
+                          ${CMAKE_CURRENT_SOURCE_DIR}
+                          ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules
+                          ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/modules)
+
+find_package(ORBSLAM2)
+
+find_package(OpenCV 3.0 QUIET)
+if(NOT OpenCV_FOUND)
+   find_package(OpenCV 2.4.3 QUIET)
+   if(NOT OpenCV_FOUND)
+      message(FATAL_ERROR "OpenCV > 2.4.3 not found.")
+   endif()
+endif()
+
+find_package(Eigen3 3.1.0 REQUIRED)
+find_package(Pangolin REQUIRED)
+find_package(Boost COMPONENTS system)
+
 
 find_package(gazebo REQUIRED)
 ## System dependencies are found with CMake's conventions
@@ -24,14 +45,36 @@ if (PKG_CONFIG_FOUND)
 endif()
 
 
-link_directories(${GAZEBO_LIBRARY_DIRS} ${Boost_LIBRARIES} ${PROTOBUF_LIBRARIES} ${OGRE_LIBRARY_DIRS})
+link_directories(${GAZEBO_LIBRARY_DIRS} ${Boost_LIBRARIES} ${PROTOBUF_LIBRARIES} ${OGRE_LIBRARY_DIRS} {ORBSLAM2_LIBRARIES})
 include_directories(${OpenCV_INCLUDE_DIR} 
                     ${Boost_INCLUDE_DIR}
                     ${catkin_INCLUDE_DIRS}
                     ${GAZEBO_INCLUDE_DIRS}
                     ${OGRE_INCLUDE_DIRS}
                     ${OGRE-Terrain_INCLUDE_DIRS}
+                    ${Pangolin_INCLUDE_DIRS}
+                    ${ORBSLAM2_INCLUDES}
                     include)
+
+set(ORB_LIBS  ${OpenCV_LIBS}
+    ${EIGEN3_LIBS}
+    ${Pangolin_LIBRARIES}
+    ${Boost_LIBRARIES}
+    ${ORBSLAM2_INCLUDES}/../Thirdparty/DBoW2/lib/libDBoW2.so
+    ${PROJECT_SOURCE_DIR}/../Thirdparty/g2o/lib/libg2o.so
+    ${ORBSLAM2_LIBRARIES}/libORB_SLAM2.so
+)
+
+add_executable(Mono
+src/ros_mono.cc
+)
+
+target_link_libraries(Mono
+${LIBS}
+)
+
+
+
 
 
 set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
