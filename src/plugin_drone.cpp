@@ -48,10 +48,15 @@ void DroneSimpleController::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   gt_topic_ = "drone/gt_pose";
   switch_mode_topic_ = "/drone/vel_mode";
   
-  if (!_sdf->HasElement("imuTopic"))
+  if (!_sdf->HasElement("imuTopic")){
     imu_topic_.clear();
+    ROS_INFO("No IMU");
+  }
   else
-    imu_topic_ = _sdf->GetElement("imuTopic")->Get<std::string>();
+    {
+      imu_topic_ = _sdf->GetElement("imuTopic")->Get<std::string>();
+      ROS_INFO_STREAM("Found IMU at "<<imu_topic_ << "\n");
+  }
   
   
   if (!_sdf->HasElement("bodyName"))

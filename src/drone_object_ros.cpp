@@ -123,10 +123,12 @@ bool DroneObjectROS::moveTo(float x, float y, float z){
 bool DroneObjectROS::pitch(float speed){
     if (!isFlying)
         return false;
-    
-    twist_msg.linear.x = 1.0;
-    twist_msg.linear.y= 1.0;
-    twist_msg.linear.z= 0;
+
+    float linspeed = 1.0;
+    if (speed < 0.0f) linspeed=linspeed*(-1);
+
+    twist_msg.linear.x = linspeed;
+    twist_msg.linear.y= 0.0;
     twist_msg.angular.x=0.0;
     twist_msg.angular.y=speed;
     twist_msg.angular.z= 0.0;
@@ -138,9 +140,11 @@ bool DroneObjectROS::roll(float speed){
     if (!isFlying)
         return false;
     
-    twist_msg.linear.x = 1.0;
-    twist_msg.linear.y= 1.0;
-    twist_msg.linear.z= 0;
+    float linspeed = -1.0;
+    if (speed < 0.0f) linspeed=linspeed*(-1);
+
+    twist_msg.linear.x = 0.0;
+    twist_msg.linear.y= linspeed;
     twist_msg.angular.x=speed;
     twist_msg.angular.y=0.0;
     twist_msg.angular.z= 0.0;
