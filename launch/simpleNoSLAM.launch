@@ -17,5 +17,5 @@
    </include>
 
   <!-- start keyboard control ui -->
-  <node name="drone_keyboard" pkg="sjtu_drone" type="drone_keyboard" respawn="false"/>
+  <node name="drone_keyboard" pkg="sjtu_drone" type="drone_keyboard" respawn="false"/><!-- output="screen" />-->
 </launch>

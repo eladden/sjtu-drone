@@ -326,13 +326,13 @@ void DroneSimpleController::UpdateState(double dt){
         m_timeAfterCmd += dt;
         if (m_timeAfterCmd > 0.5){
             navi_state = FLYING_MODEL;
-            std::cout << "Entering flying model!" << std::endl;
+            ROS_INFO("%s","\nEntering flying model!");
         }
     }else if(navi_state == LANDING_MODEL){
         m_timeAfterCmd += dt;
         if(m_timeAfterCmd > 1.0){
             navi_state = LANDED_MODEL;
-            std::cout << "Landed!" <<std::endl;
+            ROS_INFO("%s","\nLanded!");// <<std::endl;
         }
     }else
         m_timeAfterCmd = 0;

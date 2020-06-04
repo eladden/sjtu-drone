@@ -155,7 +155,7 @@
         <visualize>true</visualize>
 	<plugin name='down_camera' filename='libplugin_ros_cam.so'>
             <imageTopicName>/drone/down_camera/image_raw</imageTopicName>
-            <CxPrime>320.0</CxPrime>
+            <CxPrime>320</CxPrime>
             <Cx>320.0</Cx>
             <Cy>240.0</Cy>
             <focal_length>535.4</focal_length>

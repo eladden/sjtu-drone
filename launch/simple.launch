@@ -17,10 +17,10 @@
    </include>
 
    <!-- start keyboard control ui -->
-   <node name="drone_keyboard" pkg="sjtu_drone" type="drone_keyboard" respawn="false"/>
+   <node name="drone_keyboard" pkg="sjtu_drone" type="drone_keyboard" respawn="false" output="screen" />
 
    <!-- ORBSLAM -->
    <!-- <node name="transport" pkg="image_transport" type="republish" args="raw in:=drone/front_camera/image_raw out:=camera/image_raw" /> -->
-   <node name="ORBSLAM" pkg="ORB_SLAM2" type="Mono" args="/media/eladden/DATA/orbslamhome/ORB_SLAM2/Vocabulary/ORBvoc.txt /media/eladden/DATA/orbslamhome/ORB_SLAM2/Examples/ROS/ORB_SLAM2/Asus.yaml"/>
+   <node name="ORBSLAM" pkg="ORB_SLAM2" type="Mono" args="/media/eladden/DATA/orbslamhome/ORB_SLAM2/Vocabulary/ORBvoc.txt /media/eladden/DATA/orbslamhome/ORB_SLAM2/Examples/ROS/ORB_SLAM2/Asus.yaml" output="screen" />
    <!-- <node name="ORBSLAM" pkg="ORB_SLAM2" type="Mono" args="/media/eladden/DATA/orbslamhome/ORB_SLAM2/Vocabulary/ORBvoc.txt /media/eladden/DATA/catkin_ws/src/sjtu-drone/models/CamOptionsForOrbslam.yaml"/> -->
  </launch>

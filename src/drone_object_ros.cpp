@@ -124,7 +124,7 @@ bool DroneObjectROS::pitch(float speed){
     if (!isFlying)
         return false;
 
-    float linspeed = 1.0;
+    double linspeed = 0.4;
     if (speed < 0.0f) linspeed=linspeed*(-1);
 
     twist_msg.linear.x = linspeed;
@@ -133,14 +133,14 @@ bool DroneObjectROS::pitch(float speed){
     twist_msg.angular.y=speed;
     twist_msg.angular.z= 0.0;
     pubCmd.publish(twist_msg);
-    ROS_INFO("Pitching...");
+    ROS_INFO("Pitching... speed: %f", speed);
     return true;
 }
 bool DroneObjectROS::roll(float speed){
     if (!isFlying)
         return false;
     
-    float linspeed = -1.0;
+    double linspeed = -0.4;
     if (speed < 0.0f) linspeed=linspeed*(-1);
 
     twist_msg.linear.x = 0.0;
@@ -149,7 +149,7 @@ bool DroneObjectROS::roll(float speed){
     twist_msg.angular.y=0.0;
     twist_msg.angular.z= 0.0;
     pubCmd.publish(twist_msg);
-    ROS_INFO("Rolling...");
+    ROS_INFO("Rolling...speed: %f", speed);
     return true;
 }
 
@@ -164,21 +164,24 @@ bool DroneObjectROS::rise(float speed){
     twist_msg.angular.y = 0.0;
     twist_msg.angular.z = 0.0;
     pubCmd.publish(twist_msg);
-    ROS_INFO("Rising...");
+    ROS_INFO("Rising...speed: %f", speed);
     return true;
 }
 
 bool DroneObjectROS::yaw(float speed){
     if (!isFlying)
         return true;
-    
+
+    double linspeed = -0.4;
+    if (speed < 0.0f) linspeed=linspeed*(-1);
+
     twist_msg.linear.x = 0.0;
-    twist_msg.linear.y= 0.0;
+    twist_msg.linear.y= linspeed;
     twist_msg.linear.z= 0;
-    twist_msg.angular.x=0.0;//flag for preventing hovering
+    twist_msg.angular.x=speed;//0.0;//flag for preventing hovering
     twist_msg.angular.y=0.0;
     twist_msg.angular.z= speed;
     pubCmd.publish(twist_msg);
-    ROS_INFO("Turning head...");
+    ROS_INFO("Turning head...speed: %f", speed);
     return true;
 }
