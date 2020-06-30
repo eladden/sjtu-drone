@@ -2,7 +2,7 @@
 //#include "gazebo/sensors/ImuSensor.hh"
 #include "gazebo/sensors/SonarSensor.hh"
 namespace gazebo{
-void RosSonarPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr /*_sdf*/){
+void RosSonarPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf){
     // Make sure the ROS node for Gazebo has already been initialized
     if (!ros::isInitialized())
     {
@@ -19,8 +19,15 @@ void RosSonarPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPtr /*_sdf*/){
         gzerr << "SonarPlugin equires a SonarSensor.\n";
         return;
     }
+    if (!_sdf->HasElement("topicName"))
+    {
+      ROS_DEBUG("Sonar plugin missing <topicName>, defaults to /drone/sonar");
+      topicName= "drone/sonar";
+    }
+    else
+      topicName = _sdf->Get<std::string>("topicName");
 
-    ROS_INFO("The Sonar plugin has been loaded!");
+    ROS_INFO("A Sonar plugin has been loaded!");
 
     node_handle_ = new ros::NodeHandle("");
     //pub_ = node_handle_->advertise<sensor_msgs::Imu>(topicName, 1);

@@ -124,7 +124,7 @@ bool DroneObjectROS::pitch(float speed){
     if (!isFlying)
         return false;
 
-    double linspeed = 0.4;
+    double linspeed = 1;
     if (speed < 0.0f) linspeed=linspeed*(-1);
 
     twist_msg.linear.x = linspeed;
@@ -140,7 +140,7 @@ bool DroneObjectROS::roll(float speed){
     if (!isFlying)
         return false;
     
-    double linspeed = -0.4;
+    double linspeed = -1;
     if (speed < 0.0f) linspeed=linspeed*(-1);
 
     twist_msg.linear.x = 0.0;

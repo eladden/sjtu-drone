@@ -10,7 +10,8 @@
 namespace gazebo {
 class RosSonarPlugin: public SensorPlugin{
 public:
-    RosSonarPlugin(){topicName = "drone/sonar";}
+    RosSonarPlugin(){//topicName = "drone/sonar";}
+    }
     virtual ~RosSonarPlugin(){}
 
     virtual void Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf);

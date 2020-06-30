@@ -87,13 +87,30 @@
 	</sensor>
 
 
-	<!-- Sonar sensor in 100fps -->
-	<sensor name='sensor_sonar' type='sonar'>
+	<!-- Down facing Sonar sensor in 100fps -->
+	<sensor name='down_sonar' type='sonar'>
 	<always_on>1</always_on>
-	<visualize>0</visualize>
+	<visualize>1</visualize>
 	<update_rate>100</update_rate>
-	<pose> 0.5 0 0.3 0 1.570796327 3.141592653 </pose>
+	<pose> 0.2 0.0 -0.2 0 0 0 </pose>
 	<plugin name='ros_sonar' filename='libplugin_ros_sonar.so'>
+		<topicName>/drone/down_sonar/</topicName>
+	</plugin> 
+	<sonar>
+		<min>0</min>
+		<max>5</max>
+        	<radius>1.33974596</radius>
+        </sonar>
+        </sensor>
+
+	<!-- front facing Sonar sensor in 100fps -->
+	<sensor name='forward_sonar' type='sonar'>
+	<always_on>1</always_on>
+	<visualize>1</visualize>
+	<update_rate>100</update_rate>
+	<pose> -0.3 0.0 0.1 0 -1.57079632679 0 </pose>
+	<plugin name='ros_sonar' filename='libplugin_ros_sonar.so'>
+		<topicName>/drone/front_sonar/</topicName>
 	</plugin> 
 	<sonar>
 		<min>0</min>
@@ -167,8 +184,12 @@
 	</plugin> 
       </sensor>
 
+<!-- lazer range finder -->
+
+
 
 
      </link> 
+
 </model>
 </sdf>
