@@ -134,10 +134,10 @@ bool DroneObjectROS::pitch(float speed){
     ros::getGlobalCallbackQueue()->callAvailable(ros::WallDuration(0));
     ROS_INFO("Range ahead: %f ",frontRange.range);
 
-    double linspeed = 1;
+    double linspeed = 0.5;
     if (speed < 0.0f) linspeed=linspeed*(-1);
 
-    if ((frontRange.range > 0.75f) || (linspeed < 0.0)){
+    if ((frontRange.range > 1.0f) || (linspeed < 0.0)){
         twist_msg.linear.x = linspeed;
         twist_msg.linear.y= 0.0;
         twist_msg.angular.x=0.0;
@@ -155,7 +155,7 @@ bool DroneObjectROS::roll(float speed){
     if (!isFlying)
         return false;
     
-    double linspeed = -1;
+    double linspeed = -0.5;
     if (speed < 0.0f) linspeed=linspeed*(-1);
 
     twist_msg.linear.x = 0.0;
