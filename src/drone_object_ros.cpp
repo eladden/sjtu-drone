@@ -10,6 +10,13 @@ void DroneObjectROS::initROSVars(ros::NodeHandle& node){
     pubPosCtrl = node.advertise<std_msgs::Bool>("/drone/posctrl", 1024);
     pubCmd = node.advertise<geometry_msgs::Twist>("/cmd_vel",1024); 
     pubVelMode = node.advertise<std_msgs::Bool>("/drone/vel_mode",1024);
+//    ros::SubscribeOptions ops = ros::SubscribeOptions::create<sensor_msgs::Range>(
+//      "drone/front_sonar", 1,
+//      boost::bind(&DroneObjectROS::frontSonarCallback, this, _1),
+//      ros::VoidPtr(), &_queue);
+//    subFrontSonar = node.subscribe(ops);
+    subDownSonar = node.subscribe("drone/down_sonar",1000,&DroneObjectROS::downSonarCallback,this);
+    subFrontSonar = node.subscribe("drone/front_sonar",1000,&DroneObjectROS::frontSonarCallback,this);
 }
 
 bool DroneObjectROS::takeOff(){
@@ -124,16 +131,24 @@ bool DroneObjectROS::pitch(float speed){
     if (!isFlying)
         return false;
 
+    ros::getGlobalCallbackQueue()->callAvailable(ros::WallDuration(0));
+    ROS_INFO("Range ahead: %f ",frontRange.range);
+
     double linspeed = 1;
     if (speed < 0.0f) linspeed=linspeed*(-1);
 
-    twist_msg.linear.x = linspeed;
-    twist_msg.linear.y= 0.0;
-    twist_msg.angular.x=0.0;
-    twist_msg.angular.y=speed;
-    twist_msg.angular.z= 0.0;
-    pubCmd.publish(twist_msg);
-    ROS_INFO("Pitching... speed: %f", speed);
+    if ((frontRange.range > 0.75f) || (linspeed < 0.0)){
+        twist_msg.linear.x = linspeed;
+        twist_msg.linear.y= 0.0;
+        twist_msg.angular.x=0.0;
+        twist_msg.angular.y=speed;
+        twist_msg.angular.z= 0.0;
+        pubCmd.publish(twist_msg);
+        ROS_INFO("Pitching... speed: %f", speed);
+    }else {
+        ROS_INFO("Collision Prevented, stopped moving");
+        hover();
+    }
     return true;
 }
 bool DroneObjectROS::roll(float speed){

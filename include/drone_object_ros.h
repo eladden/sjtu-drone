@@ -3,8 +3,11 @@
 
 #include <ros/ros.h>
 #include <std_msgs/Empty.h>
+#include <sensor_msgs/Range.h>
 #include <std_msgs/Bool.h>
 #include <geometry_msgs/Twist.h>
+#include <ros/callback_queue.h>
+
 
 /**
  * @brief A simple class to send the commands to the drone through 
@@ -30,6 +33,24 @@ public:
     ros::Publisher pubCmd;
     ros::Publisher pubPosCtrl;
     ros::Publisher pubVelMode;
+
+    ros::Subscriber subDownSonar;
+    ros::Subscriber subFrontSonar;
+
+    ros::CallbackQueue _queue;
+
+    sensor_msgs::Range frontRange;
+    sensor_msgs::Range downRange;
+
+    void downSonarCallback(const sensor_msgs::Range::ConstPtr& msg)
+    {
+        downRange.range = msg->range;
+    }
+
+    void frontSonarCallback(const sensor_msgs::Range::ConstPtr& msg)
+    {
+        frontRange.range = msg->range;
+    }
     
     geometry_msgs::Twist twist_msg;
     
