@@ -52,6 +52,7 @@ public:
         frontRange.range = msg->range;
     }
     
+
     geometry_msgs::Twist twist_msg;
     
     void initROSVars(ros::NodeHandle& node);

@@ -138,11 +138,11 @@ double SensorModel_<double>::update(double dt)
 }
 
 template <>
-ignition::math::Vector3 SensorModel_<ignition::math::Vector3>::update(double dt)
+ignition::math::Vector3d SensorModel_<ignition::math::Vector3d>::update(double dt)
 {
-  current_error_.x = SensorModelInternalUpdate(current_drift_.x, drift.x, drift_frequency.x, offset.x, gaussian_noise.x, dt);
-  current_error_.y = SensorModelInternalUpdate(current_drift_.y, drift.y, drift_frequency.y, offset.y, gaussian_noise.y, dt);
-  current_error_.z = SensorModelInternalUpdate(current_drift_.z, drift.z, drift_frequency.z, offset.z, gaussian_noise.z, dt);
+  current_error_.Set(SensorModelInternalUpdate(current_drift_.X(), drift.X(), drift_frequency.X(), offset.X(), gaussian_noise.X(), dt),
+                     SensorModelInternalUpdate(current_drift_.Y(), drift.Y(), drift_frequency.Y(), offset.Y(), gaussian_noise.Y(), dt),
+                     SensorModelInternalUpdate(current_drift_.Z(), drift.Z(), drift_frequency.Z(), offset.Z(), gaussian_noise.Z(), dt));
   return current_error_;
 }
 
@@ -154,7 +154,7 @@ void SensorModel_<T>::reset(const T& value)
 }
 
 typedef SensorModel_<double> SensorModel;
-typedef SensorModel_<ignition::math::Vector3> SensorModel3;
+typedef SensorModel_<ignition::math::Vector3d> SensorModel3;
 
 }
 

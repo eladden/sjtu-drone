@@ -10,11 +10,6 @@ void DroneObjectROS::initROSVars(ros::NodeHandle& node){
     pubPosCtrl = node.advertise<std_msgs::Bool>("/drone/posctrl", 1024);
     pubCmd = node.advertise<geometry_msgs::Twist>("/cmd_vel",1024); 
     pubVelMode = node.advertise<std_msgs::Bool>("/drone/vel_mode",1024);
-//    ros::SubscribeOptions ops = ros::SubscribeOptions::create<sensor_msgs::Range>(
-//      "drone/front_sonar", 1,
-//      boost::bind(&DroneObjectROS::frontSonarCallback, this, _1),
-//      ros::VoidPtr(), &_queue);
-//    subFrontSonar = node.subscribe(ops);
     subDownSonar = node.subscribe("drone/down_sonar",1000,&DroneObjectROS::downSonarCallback,this);
     subFrontSonar = node.subscribe("drone/front_sonar",1000,&DroneObjectROS::frontSonarCallback,this);
 }
@@ -125,6 +120,7 @@ bool DroneObjectROS::moveTo(float x, float y, float z){
     
     pubCmd.publish(twist_msg);
     ROS_INFO("Moving...");
+    return true;
 }
 
 bool DroneObjectROS::pitch(float speed){
@@ -179,7 +175,7 @@ bool DroneObjectROS::rise(float speed){
     twist_msg.angular.y = 0.0;
     twist_msg.angular.z = 0.0;
     pubCmd.publish(twist_msg);
-    ROS_INFO("Rising...speed: %f", speed);
+    ROS_INFO("Rising...speed: %f, hight %f", speed, downRange.range);
     return true;
 }
 
